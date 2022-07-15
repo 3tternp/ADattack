@@ -218,7 +218,8 @@ Sure, this definition is far from being totally accurate, but I hope it is simpl
 
 ```
 
-Active Directory network
+_Active Directory network_
+
 Imagine a company with hundreds of employees, where each one works in its own (probably Windows) computer. This company has several different departments, like sales, human resources, IT, etc.
 
 Now imagine that the sales department requires a new program to be installed in their workstations. Or that each day an user in a different office forgets its password and it needs to be restored. Or that the new group of interns are only required to work with a few documents of a file server.
