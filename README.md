@@ -1,4 +1,5 @@
-![image](https://user-images.githubusercontent.com/26215963/179186785-8dbfa3a2-07b4-4f95-8500-0b26a18389c7.png)
+(https://user-images.githubusercontent.com/26215963/179187110-49f63902-265f-41cb-a9e0-f6547b3738a4.png)
+
 What is Active Directory?
 Domains
 Domain name
