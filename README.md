@@ -19,8 +19,8 @@
     - User Secrets
       - LM/NT hashes
       - Kerberos keys
-UserAccountControl
-Other user properties
+    - UserAccountControl
+    - Other user properties
 Important Users
 Computer accounts
 Trust accounts
