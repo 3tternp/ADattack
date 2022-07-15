@@ -3,7 +3,7 @@
 
 ![image](https://user-images.githubusercontent.com/26215963/179187206-83cb8792-e7aa-417f-9db6-2bc6ccb739da.png)
 
-- #Domains
+- Domains
   - Domain name
 - Forests
   - Functional Modes
@@ -193,8 +193,8 @@ LAPS
 Exchange
 SQL Server
 Recommended resources
-Disclaimer: This is done for educational purposes, and you should only apply the attacks described here to systems that you have permission for.
-
+`#0d1117` Disclaimer: This is done for educational purposes, and you should only apply the attacks described here to systems that you have permission for.
+`#0d1117`
 What is Active Directory?
 From my perspective, Active Directory is a system that allows to manage a set of computers and users connected in the same network from a central server.
 
