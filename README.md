@@ -134,7 +134,7 @@ Kerberos services
 Kerberos keys
 Kerberos basic attacks
 Kerberos brute-force
-Kerberoast
+- Kerberoast
 ASREProast
 Pass the Key/Over Pass the Hash
 Pass the Ticket
@@ -154,16 +154,16 @@ S4U attacks
 Logon types
 Interactive logon
 Network logon
-Batch logon
-Service logon
-NetworkCleartext logon
-NewCredentials logon
-RemoteInteractive logon
-Authorization
-ACLs
-Security descriptor
-ACEs
-Rights
+- Batch logon
+- Service logon
+- NetworkCleartext logon
+- NewCredentials logon
+- RemoteInteractive logon
+- Authorization
+- ACLs
+- Security descriptor
+- ACEs
+- Rights
 ACL attacks
 AdminSDHolder
 Privileges
@@ -174,9 +174,9 @@ Group Policy container
 Communication Protocols
 SMB
 Shares
-Default shares
-Default domain shares
-Named pipes
+- Default shares
+- Default domain shares
+- Named pipes
 HTTP
 RPC
 RPC over SMB
@@ -1106,7 +1106,7 @@ Specifically, in order to access to LSASS process memory, you need the SeDebugPr
 
 Moreover, SeDebugPrivilege must be enabled in the process that tries to dump the LSASS memory. By default is enabled in Powershell and disabled in CMD (and therefore in their child processes). If you are launching mimikatz, you can enable it by using the privilege::debug command. In other case you can launch the process with Powershell using powershell.exe <command>, or using some tool like sepriv to enable it in CMD.
 
-C:\>.\mimikatz.exe
+```diff C:\>.\mimikatz.exe
 
   .#####.   mimikatz 2.2.0 (x64) #19041 Sep 18 2020 19:18:29
  .## ^ ##.  "A La Vie, A L'Amour" - (oe.eo)
@@ -1149,7 +1149,7 @@ SID               : S-1-5-21-1372086773-2238746523-2939299801-500
         ssp :
         credman :
         cloudap :
-Dump credentials with mimikatz
+Dump credentials with mimikatz ```
 Notwithstanding, you should be aware that LSASS can be protected against credential extraction.This could be achieved by Credential Guard, that uses the hypervisor technology to store the credentials in a safer place outside of the operative system. However Credential Guard can be bypassed.
 
 Additionally, lsass.exe can be configured to run as a PPL (Protected Process Light). Even if this makes more difficult the credentials extraction, it can be disabled.
