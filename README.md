@@ -4,8 +4,7 @@
 ![image](https://user-images.githubusercontent.com/26215963/179187206-83cb8792-e7aa-417f-9db6-2bc6ccb739da.png)
 
 - Domains
-
-      - Domain name
+  - Domain name
 - Forests
 - Functional Modes
 - Trusts
