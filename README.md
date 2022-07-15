@@ -21,9 +21,9 @@
       - Kerberos keys
     - UserAccountControl
     - Other user properties
- - Important Users
- - Computer accounts
- - Trust accounts
+  - Important Users
+  - Computer accounts
+  - Trust accounts
 Groups
 Important groups
 Administrative groups
