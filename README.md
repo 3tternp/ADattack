@@ -29,8 +29,8 @@
     - Administrative groups
     - Other important groups
   - Group Scope
-Computers
-Domain Controllers
+- Computers
+  - Domain Controllers
 Domain Controllers discovery
 Domain database dumping
 Windows computers
