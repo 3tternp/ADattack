@@ -24,11 +24,11 @@
   - Important Users
   - Computer accounts
   - Trust accounts
-Groups
-Important groups
-Administrative groups
-Other important groups
-Group Scope
+- Groups
+  - Important groups
+    - Administrative groups
+    - Other important groups
+  - Group Scope
 Computers
 Domain Controllers
 Domain Controllers discovery
