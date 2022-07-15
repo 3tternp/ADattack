@@ -215,6 +215,7 @@ Sure, this definition is far from being totally accurate, but I hope it is simpl
   o   |    |         |    |       |    |  \o/
  /|\  |____| <-------'    '-----> |____|   | 
  / \  /::::/                      /::::/  / \
+
 Active Directory network
 Imagine a company with hundreds of employees, where each one works in its own (probably Windows) computer. This company has several different departments, like sales, human resources, IT, etc.
 
