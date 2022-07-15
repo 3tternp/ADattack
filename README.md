@@ -199,7 +199,7 @@ What is Active Directory?
 From my perspective, Active Directory is a system that allows to manage a set of computers and users connected in the same network from a central server.
 
 Sure, this definition is far from being totally accurate, but I hope it is simple enough to give you an idea of what AD is.
-**  
+```diff 
        ____                         __ 
   o   |    |                       |==|
  /|\  |____| <--------.    .-----> |  |
@@ -216,7 +216,7 @@ Sure, this definition is far from being totally accurate, but I hope it is simpl
  /|\  |____| <-------'    '-----> |____|   | 
  / \  /::::/                      /::::/  / \
 
-**
+```
 
 Active Directory network
 Imagine a company with hundreds of employees, where each one works in its own (probably Windows) computer. This company has several different departments, like sales, human resources, IT, etc.
