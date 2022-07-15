@@ -1,7 +1,6 @@
+Active Directory !!
 ![image](https://user-images.githubusercontent.com/26215963/179187206-83cb8792-e7aa-417f-9db6-2bc6ccb739da.png)
 
-
-What is Active Directory?
 Domains
 Domain name
 Forests
