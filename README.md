@@ -14,11 +14,11 @@
   - Trust key
   - More on trusts
 - Users
-- User properties
-- User Identifiers
-User Secrets
-LM/NT hashes
-Kerberos keys
+  - User properties
+    - User Identifiers
+    - User Secrets
+      - LM/NT hashes
+      - Kerberos keys
 UserAccountControl
 Other user properties
 Important Users
