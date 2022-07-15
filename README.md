@@ -6,13 +6,13 @@
 - Domains
   - Domain name
 - Forests
-- Functional Modes
+  - Functional Modes
 - Trusts
-- Trust direction
-- Trust transitivity
-- Trust types
-- Trust key
-- More on trusts
+  - Trust direction
+  - Trust transitivity
+  - Trust types
+  - Trust key
+  - More on trusts
 - Users
 - User properties
 - User Identifiers
