@@ -33,20 +33,20 @@
   - Domain Controllers
     - Domain Controllers discovery
     - Domain database dumping
-- Windows computers
-- Windows computers discovery
-- Windows computers connection
-- Connecting with RPC/SMB
-- Connecting with Powershell Remoting
-- Connecting with RDP
-- Windows computers credentials
-- LSASS credentials
-- Registry credentials
-- LSA secrets
-- SAM
-Dumping registry credentials
-Powershell history
-Other places to find credentials in Windows
+  - Windows computers
+    - Windows computers discovery
+    - Windows computers connection
+      - Connecting with RPC/SMB
+      - Connecting with Powershell Remoting
+      - Connecting with RDP
+    - Windows computers credentials
+      - LSASS credentials
+      - Registry credentials
+        - LSA secrets
+        - SAM
+        - Dumping registry credentials
+      - Powershell history
+      - Other places to find credentials in Windows
 Linux computers
 Linux computers discovery
 Linux computers connection
