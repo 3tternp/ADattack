@@ -1329,11 +1329,11 @@ In other case, can be a little more difficult since Linux computers don't have a
 
 Linux computers connection
 In order to connect to a Linux machine to get a shell in it, the most common option is to use SSH. Sometimes you may even could use Powershell remoting, since it can work over SSH.
-
+```diff
 $ ssh root@debian10 
 root@192.168.100.137's password: 
 Linux debian10 4.19.0-14-amd64 #1 SMP Debian 4.19.171-2 (2021-01-30) x86_64
-
+  
 The programs included with the Debian GNU/Linux system are free software;
 the exact distribution terms for each program are described in the
 individual files in /usr/share/doc/*/copyright.
@@ -1342,11 +1342,13 @@ Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
 permitted by applicable law.
 Last login: Fri May  7 12:55:20 2021 from 192.168.100.137
 root@debian10:~#
+  ```
 SSH connection to a Linux machine
 Apart from using username and password, you may can connect by using an SSH key that you may can grab from another machine.
-
+```diff
 $ ssh -i id_ed25519_foo_key foo@db.contoso.local
-Connecting to another machine with an SSH key.
+```
+  Connecting to another machine with an SSH key.
 Finally in case the target Linux computer is part of the domain, you may be able to use Kerberos authentication with SSH. You can specify the SSH client to use Kerberos authentication by enabling the GSSAPI authentication (-o GSSAPIAuthentication=yes). You can get a ticket by stolen it (Pass-The-Ticket), or by requesting it with a NT hash (Overpass-The-Hash) or Kerberos key (Pass-The-Key). You can use Rubeus, cerbero or impacket to request Kerberos tickets with NT hash or Kerberos keys.
 
 Moreover, older Linux machines may have Telnet enabled on port 23. You will need an username and password to connect to it.
@@ -1356,21 +1358,23 @@ Unfortunately for attackers, Linux doesn't have a lsass process with cached cred
 
 Linux Kerberos tickets
 In order to be authenticate users, the Linux machines usually have a Kerberos client that is configured with the domain computer account. You can find the credentials in the keytab, usually found in /etc/krb5.keytab, or in the value specified by the environment variables KRB5_KTNAME or KRB5_CLIENT_KTNAME, or specified in the Kerberos configuration file in /etc/krb5.conf. You can display its contents, including the keys, with klist command, or cerbero.
-
+```diff
 $ klist -k -Ke
 Keytab name: FILE:/etc/krb5.keytab
 KVNO Principal
 ---- --------------------------------------------------------------------------
    1 r2d2@contoso.local (DEPRECATED:arcfour-hmac)  (0xc49a77fafad6d3a9270a8568fa453003)
+  ```
 Displaying the accounts in the default keytab
 In this case there is a configured account with the NT hash (that is used in RC4-HMAC algorithm of Kerberos). You can use the keys stored to ask for a Kerberos ticket an impersonate the user.
 
 Additionally, when a domain user is authenticated in the machine, a Kerberos ticket is retrieved. You can take these tickets and impersonate the users in the domain. You can normally find the tickets under the /tmp directory in files with the format krb5cc_%{uid} where uid is the user UID. However, it is also possible that tickets are stored in the Linux kernel keys instead of files, but you can grab them and convert to files by using tickey. Once you have the ticket files, you can use them to perform a Pass the ticket attack.
-
+```
 $ ls /tmp/ | grep krb5cc
 krb5cc_1000
 krb5cc_1569901113
 krb5cc_1569901115
+  ```
 Tickets in Linux
 In order to be sure where the tickets are stored in a Linux machine, you can check the Kerberos configuration file in /etc/krb5.conf.
 
@@ -1379,13 +1383,15 @@ Apart from that, you can get the credentials stored in the /etc/shadow file that
 
 SSH keys
 Another possibility is to search for SSH private keys, usually stored in the .ssh directory of the users directory. The name of the file is usually id_rsa or id_ed25519.
-
-$ file .ssh/id_ed25519
+```diff
+  $ file .ssh/id_ed25519
 .ssh/id_ed25519: OpenSSH private key
+```
 Private key identification
 In case the private key doesn't require a passphrase for using it, then you may can use it to connect to another machines in the domain.
-
+```diff
 $ ssh -i id_ed25519_foo_key foo@db.contoso.local
+```
 Connecting to another machine with the SSH key.
 Furthermore, if you can find the known_hosts file in .ssh directory, and you are lucky, it may show you the hostnames of the machines that are connected through ssh by using the private keys. However, this file can contain the names hashed, but you can crack them with hashcat. To create a wordlist of hostnames you could query the hostnames of the machines in the domain.
 
@@ -1394,7 +1400,10 @@ Additionally, you may find more information about ssh connections and other stuf
 
 By the way, if you want to avoid letting your commands logged in the history, you can unset the HISTFILE environment variable or using a similar method.
 
+```diff
 unset HISTFILE
+```
+  
 Disable bash history
 Other places to find credentials in Linux
 Likewise, you may be able to find passwords and keys to connect to different services (like databases) and machines in configuration files of the software or scripts located in the machine.
@@ -1419,12 +1428,13 @@ In order to store this information, each service is identified by an Service Pri
 
 service_class/machine_name[:port][/path]
 The machine_name can be the hostname or the FQDN (Fully Qualified Domain Name: the hostname and domain name joined). It is normal that both formats are stored for Kerberos compatibility. For example:
-
+```diff
 ldap/DC01
 ldap/dc01.contoso.local
 LDAP service SPNs
+```
 The SPN will be stored in a user (or computer) object, that way the service user can be identified.
-
+```diff
 PS C:\> Get-ADComputer ws01-10 -Properties ServicePrincipalName | select -ExpandProperty ServicePrincipalName
 TERMSRV/WS01-10
 TERMSRV/ws01-10.contoso.local
@@ -1432,6 +1442,7 @@ RestrictedKrbHost/ws01-10.contoso.local
 HOST/ws01-10.contoso.local
 RestrictedKrbHost/WS01-10
 HOST/WS01-10
+```
 services of ws01-10 computer
 It also important to note that even if the service is currently not being executed, it can be still registered in the Active Directory database. This is important cause old services can lead to account takeover by using Kerberoast.
 
