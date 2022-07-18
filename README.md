@@ -353,7 +353,7 @@ On the other hand there are Outbound or Outgoing trusts, that go from your domai
 And when two domains are connected by both an incoming and an outgoing trust, it is said that they are linked by a bidirectional trust (even if there are really two trusts).
 
 You can see the trusts of your domain with nltest /domain_trusts.
-
+```diff 
 PS C:\Users\Administrator> nltest /domain_trusts
 List of domain trusts:
     0: CONTOSO contoso.local (NT 5) (Direct Outbound) ( Attr: foresttrans )
@@ -361,14 +361,16 @@ List of domain trusts:
     2: POKEMON poke.mon (NT 5) (Forest Tree Root) (Primary Domain) (Native)
 The command completed successfully
 Trusts of poke.mon domain
+```
 Here we can see that our current domain is poke.mon (cause of the (Primary Domain) attribute) and there are a couple of trusts. The outbound trust with contoso.local indicates that its users can access to our domain, poke.mon. Moreover, there is a second bidirectional trust with it.poke.mon that is a subdomain of poke.mon and it is in the same forest.
-
+```diff 
 PS C:\Users\Anakin> nltest /domain_trusts
 List of domain trusts:
     0: POKEMON poke.mon (NT 5) (Direct Inbound) ( Attr: foresttrans )
     1: CONTOSO contoso.local (NT 5) (Forest Tree Root) (Primary Domain) (Native)
 The command completed successfully
 Trusts of contoso.local
+```
 Consequently, if we check the trust of contoso.local, we can see an inbound connection from poke.mon, which is consistent with the previous information. So users of contoso.local can access to poke.mon.
 
 Trust transitivity
@@ -384,7 +386,7 @@ For example, if the trust between Domain A and Domain B is transitive, then the 
 Therefore, in relation with the domains in the same forest , all the domains users can access to other domains cause all the parent and child domains are connected through bidirectional transitive trusts. This way, any domain of the forest can traverse the required trusts to access to other domain in the same forests.
 
 In a forest, to allow access from any domain to any other, all the parents and children are connected by a bidirectional transitive trust.
-
+```diff 
               contoso.local
                ^  v   v  ^  
           .----'  |   |  '----.
@@ -396,6 +398,7 @@ In a forest, to allow access from any domain to any other, all the parents and c
           ^  v
   webs.it.contoso.local
 contoso.local forest trusts
+```
 So to access to computers of hr.contoso.local, a user of webs.it.contoso.local must traverse three trusts.
 
 Trust types
@@ -433,7 +436,7 @@ The user object stores many different data, but the first attributes to be taken
 For identifying an user usually the username is used, that is stored in the SamAccountName attribute. Additionally, the SID (Security Identifier) can also be used to identifying the user.
 
 The user SID is similar to the domain SID, and, in fact is the combination of the domain SID plus the user RID (Relative Identifier), which is the last number that appears in the user SID.
-
+```diff 
 PS C:\Users\Anakin> Get-ADUser Anakin
 
 
@@ -447,6 +450,7 @@ SamAccountName    : anakin
 SID               : S-1-5-21-1372086773-2238746523-2939299801-1103
 Surname           :
 UserPrincipalName : anakin@contoso.local
+```
 Get user information
 In this case the domain SID is S-1-5-21-1372086773-2238746523-2939299801 and the user RID is 1103. Some tools display the SID in their output instead of the username (since its used in some structures like security descriptors), so you should be aware of its format in order to identify it.
 
@@ -494,12 +498,13 @@ NT hash calculation pseudocode
 Many times the NT hash is called NTLM hash, however this can be confusing since the NTLM protocol also use hashes, called NTLM hashes. In this article an NTLM hash will be a hash of the NTLM protocol.
 
 Many tools allow you to extract the LM and NT hashes, and they usually return an output with several lines, one per user, with the format <username>:<rid>:<LM>:<NT>:::. In case of LM is not being used, its value will be aad3b435b51404eeaad3b435b51404ee (the LM hash of an empty string).
-
+```diff 
 Administrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
 Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
 DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
 WDAGUtilityAccount:504:aad3b435b51404eeaad3b435b51404ee:6535b87abdb112a8fc3bf92528ac01f6:::
 user:1001:aad3b435b51404eeaad3b435b51404ee:57d583aa46d571502aad4bb7aea09c70:::
+  ```
 Hashes dump format
 It is important for a pentester to recognize NT hashes since, even they are not the user passwords, are used for authenticate in Windows machines, so they are very useful. They can be used to perform Pass-The-Hash or Overpass-the-Hash attacks in order to impersonate users in remote machines.
 
@@ -550,7 +555,7 @@ ServicePrincipalName -> Services of the user. Can be useful for the Kerberoast a
 msDS-AllowedToDelegateTo -> The list of services for which the user (and its own services) can impersonate clients using Kerberos Constrained Delegation. SeEnableDelegationPrivilege required to modify it.
 Important Users
 To consult the users there are several options, like the net user /domain command, or Powershell. There is no need to have an special privilege to list users, any user can do it.
-
+```diff 
 PS C:\Users\Anakin> Get-ADUser -Filter * | select SamAccountName
 
 SamAccountName
@@ -561,6 +566,7 @@ krbtgt
 anakin
 han
 POKEMON$
+  ```
 List users with Powershell
 As you may notice, my test domain is little with very few users, but in a real engagement there will be hundreds or thousands of users. So it should be important to distinguish what are the really important. This could be a little tricky since it depends on the organization, but usually members of the IT team use to have privileged users, they need it to do their work.
 
@@ -574,7 +580,7 @@ Another thing to take into account is that in a organization, each person has it
 The difference between user accounts and computers accounts is that the firsts are stored as instances of User class in the database whereas the others are stored as instances of Computer class (which is a subclass of User class). Moreover the computer accounts names are the computer hostname finished with a dollar sign $.
 
 You can check it by executing the following command:
-
+```diff 
 PS C:\> Get-ADObject -LDAPFilter "objectClass=User" -Properties SamAccountName | select SamAccountName
 
 SamAccountName
@@ -589,6 +595,7 @@ WS02-7$
 DC02$
 han
 POKEMON$
+  ```
 Retrieve all users of the domain
 As you can see, there are many more users than using the Get-ADUser command, since subclasses of User class are now included. You can appreciate that new accounts finish with a dollar sign and seems to have a computer name. For example, DC01$ and DC02$ for the Domain Controllers and WS01-10$ and WS02-7$ for the workstations.
 
@@ -600,12 +607,13 @@ Trust accounts
 However there is also the POKEMON$ account that appears in both Get-ADUser and Get-ADObject, but whose name is finished by a dollar sign. That could be normal user (there is no problem with creating usernames finished with $), however, as we have seen previously, there is a trust with the poke.mon domain.
 
 When an trust is established, an associated user object is created in each domain to store the trust key. The name of the user is the NetBIOS name of the other domain, finished in $ (similar to a computer account name). For example, in case of the trust between the domains FOO and BAR, the FOO domain would store the trust key in the BAR$ user, and the BAR domain would store it in the FOO$ user.
-
+```diff 
 PS C:\> Get-ADUser  -LDAPFilter "(SamAccountName=*$)" | select SamAccountName
 
 SamAccountName
 --------------
 POKEMON$
+  ```
 List trust accounts in domain
 This POKEMON$ user object is used to store the trust keys, which are the NT hash or Kerberos keys (one of other is used depending on the context). If you can get the secrets of this account, you can create inter-realm Kerberos tickets.
 
@@ -617,7 +625,7 @@ The solution is to use groups. In this case you could have a "Manager" group whe
 As well as users, the groups are stored in the domain database. And, in the same way, they can be identified by the SamAccountName attribute or the SID.
 
 You can consult the database in order to list the groups and their members.
-
+```diff 
 PS C:\Users\Anakin> Get-ADGroup -Filter * | select SamAccountName
 
 SamAccountName
@@ -644,8 +652,9 @@ DHCP Administrators
 List groups of the domain
 Important groups
 Administrative groups
+```
 In Active Directory there are many default groups defined for different roles in the domain/forest. As attacker, one of the most juicy groups is the Domain Admins group, that gives administrator privileges to its members in the domain, so being aware of who is this group is important.
-
+```diff 
 PS C:\Users\Anakin> Get-ADGroup "Domain Admins" -Properties members,memberof
 
 
@@ -660,13 +669,14 @@ ObjectClass       : group
 ObjectGUID        : ac3ac095-3ea0-4922-8130-efa99ba99afa
 SamAccountName    : Domain Admins
 SID               : S-1-5-21-1372086773-2238746523-2939299801-512
+```
 Domain Admins group information
 But there are also other important groups that can give you a lot of privileges, and ones even more. This is the case of the Enterprise Admins group, which provides administrator privileges in all the forest.
 
 The Enterprise Admins is a group that only exists in the root domain of the forest, but is added by default to the Administrators group of the all the domains in the forest.
 
 On the other hand, the Domain Admins group is added to the Administrators group of the domain, as well as the Administrators groups of the domain computers.
-
+```diff 
 
                         .------------------------.
                         |     contoso.local      |
@@ -707,7 +717,9 @@ On the other hand, the Domain Admins group is added to the Administrators group 
 |      |____|            |____|    |     |     |____|            |____|     |
 |      /::::/            /::::/    |     |     /::::/            /::::/     |
 '----------------------------------'     '----------------------------------'
-Administrators groups memberships in forest
+
+```
+                                                                        Administrators groups memberships in forest
 Other important groups
 But there are other important groups to be taken into account:
 
@@ -773,7 +785,7 @@ It is clear that domains controller are one of the most important pieces of Acti
 Due to the wide range of services offered by the domain controller, there are many ways to identify the domain controllers of a domain.
 
 One possibility that doesn't require any type of authentication is to make a simple DNS query asking for the LDAP servers of the domain (which are the domain controllers):
-
+```diff 
 PS C:\Users\Anakin> nslookup -q=srv _ldap._tcp.dc._msdcs.contoso.local
 Server:  UnKnown
 Address:  192.168.100.2
@@ -790,17 +802,19 @@ _ldap._tcp.dc._msdcs.contoso.local      SRV service location:
           svr hostname   = dc02.contoso.local
 dc01.contoso.local      internet address = 192.168.100.2
 dc02.contoso.local      internet address = 192.168.100.3
+```
 DNS query to identify domain controllers
 Also, you can use some system utility like nltest to get the domain controllers, but you require have an user.
-
+```diff 
 PS C:\Users\Anakin> nltest /dclist:contoso.local
 Get list of DCs in domain 'contoso.local' from '\\dc01.contoso.local'.
     dc01.contoso.local [PDC]  [DS] Site: Default-First-Site-Name
     dc02.contoso.local        [DS] Site: Default-First-Site-Name
 The command completed successfully
+```
 Identify domain controllers with nltest
 Moreover, if you do a port scan of a machine and the result is similar to the following, surely is a domain controller:
-
+```diff 
 $ nmap 192.168.100.2 -Pn -sV -p-
 Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
 Starting Nmap 7.91 ( https://nmap.org ) at 2021-05-04 11:17 CEST
@@ -838,6 +852,7 @@ Service Info: Host: DC01; OS: Windows; CPE: cpe:/o:microsoft:windows
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 164.31 seconds
+```
 Nmap service scan of a Domain Controller
 This output show a lot of ports open. Here is a brief description of the service offer by each port:
 
@@ -864,7 +879,7 @@ Finally, in case you become the administrator of the domain, you may want to dum
 In order to extract the contents of the database, you can log in on the domain controller and dumping the NTDS.dit file locally with ntdsutil or vssadmin, or you could perform a remote dcsync attack, with the mimikatz lsadump::dsync command or the impacket secretsdump.py script.
 
 Be careful launching a DCSync attack, since if you request all the credentials in a big domain, the DC that is responding could run out of memory and crash!!
-
+```diff 
 $ secretsdump.py 'contoso.local/Administrator@192.168.100.2' -just-dc-user krbtgt
 Impacket v0.9.21 - Copyright 2020 SecureAuth Corporation
 
@@ -880,12 +895,12 @@ krbtgt:des-cbc-md5:0e6d79d66b4951cd
 DCSync attack with secretsdump to retrieve krbtgt credentials
 Windows computers
 Apart from the Domain Controllers, there are many other Windows machines in a domain, that are used both as workstation (usually Windows 10/8/7/Vista/XP) or as an applications servers (usually Windows Server editions).
-
+```
 Windows computers discovery
 You can identify the Windows machines in a domain or network by using several techniques.
 
 The first option, in case you domain have credentials, could be to query the domain database through LDAP, that can give you both the computer names and even the operating system.
-
+```diff 
 ~$ ldapsearch -H ldap://192.168.100.2 -x -LLL -W -D "anakin@contoso.local" -b "dc=contoso,dc=local" "(objectclass=computer)" "DNSHostName" "OperatingSystem"
 Enter LDAP Password: 
 dn: CN=DC01,OU=Domain Controllers,DC=contoso,DC=local
@@ -903,16 +918,18 @@ dNSHostName: WS02-7.contoso.local
 dn: CN=SRV01,CN=Computers,DC=contoso,DC=local
 operatingSystem: Windows Server 2019 Standard Evaluation
 dNSHostName: srv01.contoso.local
+```
 Search for computers of the domain
 Another techniques, in case you don't have credentials, can involve scans of the network. Windows computers have several ports open by default and they are not usually protected by a firewall in a domain environment.
 
 For example, the NetBIOS name service listens in the port 137 and allows you to even resolve the NetBIOS name from the IP. You can perform a NetBIOS scan by using a tool like nbtscan or nmap nbtstat script.
-
+```diff 
 $ nbtscan 192.168.100.0/24
 192.168.100.2   CONTOSO\DC01                    SHARING DC
 192.168.100.7   CONTOSO\WS02-7                  SHARING
 192.168.100.10  CONTOSO\WS01-10                 SHARING
 *timeout (normal end of scan)
+```                                                                    
 NetBIOS scan
 Also, a very popular service that listens in the port 445 is SMB, heavily used for Windows computers to communicate each other. You can perform an port scan to discover Windows computers and you can even take advantage of the NTLM authentication negotiation to retrieve the machine name. You can perform an scan with ntlm-info or nmap smb-os-discovery script.
 
