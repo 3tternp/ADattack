@@ -1448,9 +1448,10 @@ It also important to note that even if the service is currently not being execut
 
 To sum up Kerberoast, you can ask for a Kerberos ticket for any service registered in the domain. The Kerberos ticket for the service will have a part encrypted with the service user secret (that can be the NT hash or Kerberos keys) derived from the password. Then you can save the ticket and try to crack it to recover the user password. For computer services this is unfeasible cause the password is too complex, but for user services that can have a weak password this could be possible to achieve.
 
-Host service
+**Host service**
+  
 Moreover, because by default Windows systems deploy a lot of services, in the machines by default a HOST service class is registered. That HOST class is an alias for several services.
-
+```diff
 PS C:\Users\Administrator> Get-ADObject -Identity "CN=Directory Service,CN=Windows NT,CN=Services,CN=Configuration,$((Get-ADDomain).DistinguishedName)" -properties sPNMappings
 
 
@@ -1463,8 +1464,10 @@ sPNMappings       : {host=alerter,appmgmt,cisvc,clipsrv,browser,dhcp,dnscache,re
                     lugplay,protectedstorage,rasman,rpclocator,rpc,rpcss,remoteaccess,rsvp,samss,scardsvr,scesrv,seclog
                     on,scm,dcom,cifs,spooler,snmp,schedule,tapisrv,trksvr,trkwks,ups,time,wins,www,http,w3svc,iisadmin,
                     msdtc}
+  ```
 Services classes identified by HOST
-Database
+**
+  Database**
 We have been talking about the domain database and some objects that are stored in it, such as users, groups or services. Let's see now more details about the database.
 
 Firstly, the physical location of the database is the C:\Windows\NTDS\ntds.dit file, located in the Domain Controllers. Each Domain Controller has its own NTDS file and synchronization between Domain Controllers is required in order to keep the database up to date.
@@ -1481,7 +1484,7 @@ The ObjectClass property contains a list of the classes of an object, that is it
 On the other hand, the ObjectGUID property is a GUID (globally unique identifier) to identify each object of the database. It must not be confused with the SID (or SecurityIdentifier) property, which is an identifier related to security principals, such as users or groups.
 
 Also is important to note that classes can be attached to auxiliary classes in order to get its properties. This auxiliary classes won't appear in the ObjectClass property. For example, many of the most relevant classes when performing a pentest, like User and Group, are attached to Security-Principal auxiliary class, the class that defines the SAMAccountName and SID properties.
-
+```diff
 PS C:\> . .\PowerView.ps1
 PS C:\> Get-NetComputer dc01 -Properties objectclass | select -ExpandProperty objectclass
 top
@@ -1489,6 +1492,8 @@ person
 organizationalPerson
 user
 computer
+  ```
+
 Classes of computer object
 Properties
 As we have seen, each class can have several properties or attributes. Usually, the properties store a string value, like Name or a number like UserAccountControl.
@@ -1498,7 +1503,7 @@ Generally, any user of the domain can read the information of any object of the 
 The database defines the UserPassword and UnicodePwd, but these properties cannot be read, only written. When a password change is required, these properties can be written in order to modify the user password.
 
 Moreover, there are certain properties that contain sensitive data that should be only retrieved by authorized users. In order to achieve this, these property are marked as confidential properties in the schema (setting the 128 flag in SearchFlags of the property definition) . Thus, in order to read a confidential property, apart from the read rights, an user required CONTROL_ACCESS right over that specific property.
-
+```diff
 PS C:\Users\Administrator> Get-ADObject -LDAPFilter "(searchflags:1.2.840.113556.1.4.803:=128)" -SearchBase "CN=Schema,CN=Configuration,DC=contoso,DC=local" | Select Name
 
 Name
@@ -1525,6 +1530,7 @@ ms-PKI-RoamingTimeStamp
 ms-PKI-DPAPIMasterKeys
 ms-PKI-AccountCredentials
 UnixUserPassword
+  ```
 Get confidential properties
 Additionally, there are certain properties that require to meet certain conditions before being written. This is controlled with Validated Writes, for example editing services of an account.
 
