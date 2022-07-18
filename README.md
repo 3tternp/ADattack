@@ -892,10 +892,11 @@ krbtgt:aes256-cts-hmac-sha1-96:5249e3cf829c979959286c0ee145b7e6b8b8589287bea3c83
 krbtgt:aes128-cts-hmac-sha1-96:a268f61e103134bb7e975a146ed1f506
 krbtgt:des-cbc-md5:0e6d79d66b4951cd
 [*] Cleaning up...
+```
 DCSync attack with secretsdump to retrieve krbtgt credentials
 Windows computers
 Apart from the Domain Controllers, there are many other Windows machines in a domain, that are used both as workstation (usually Windows 10/8/7/Vista/XP) or as an applications servers (usually Windows Server editions).
-```
+
 Windows computers discovery
 You can identify the Windows machines in a domain or network by using several techniques.
 
@@ -1085,7 +1086,9 @@ dc01
 [dc01]:
 ```
 Using Powershell Remoting with Overpass-the-Hash
-Connecting with RDP
+
+ ** Connecting with RDP**
+  
 One common method to connect to a remote machine in Windows is RDP (Remote Desktop Protocol). You can use RDP from a Windows machine by using the default client "Remote Desktop Connection" (mstsc). From Linux there are excellent clients like rdesktop, freerdp or remmina.
 
 Unlike RPC/SMB and Powershell Remoting, RDP transmits the plain user password to the target computer in order to cache the credentials and facilitate SSO (Single Sign On), as if the user was logged on its physical machine. Due to this to use RDP you are required to use the user password and it is not possible to perform a Pass-The-Hash… by default.
@@ -1093,14 +1096,17 @@ Unlike RPC/SMB and Powershell Remoting, RDP transmits the plain user password to
 As we have mentioned, when connection through RDP the credentials are cached in the target machine, susceptible to being stolen from the lsass process with tools like mimikatz. The credentials are cached in order to being reused to network connections from the target machine, but sometimes this is unnecessary, so in Windows 8.1 / 2012 R2 Microsoft introduced the Restricted Admin mode for RPD. When Restricted Admin mode is enabled you don't send the plain credentials, so it is possible to perform a Pass-The-Hash/Key/Ticket to establish an RDP connection.
 
 From Linux, you can use freerdp to perform a Pass-The-Hash with RDP (you need to install the freerdp2-x11 freerdp2-shadow-x11 packages instead of freerdp-x11 as the article said). You only need to provide the NT hash instead of the password.
-
+```diff
 xfreerdp /u:Anakin@contoso.local /pth:cdeae556dc28c24b5b7b14e9df5b6e21 /v:192.168.122.143
+```
 Pass-The-Hash with freerdp
 On the other hand, from Windows you can inject a NT hash or Kerberos ticket with mimikatz or Rubeus and then use mstsc.exe /restrictedadmin to establish a RDP connection without requiring the user password.
 
-./rdp_restrictedadmin.png
+![image](https://user-images.githubusercontent.com/26215963/179484120-394b8a51-1f58-4f2b-8f0d-30509a3aeff5.png)
+
 Restricted Admin is enabled
-./rdp_no_restrictedadmin.png
+
+  ![image](https://user-images.githubusercontent.com/26215963/179484202-ac11e864-0b23-4c12-8c3d-0ce67d0970f3.png)
 Restricted Admin is not enabled
 Windows computers credentials
 LSASS credentials
