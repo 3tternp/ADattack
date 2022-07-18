@@ -1107,17 +1107,20 @@ On the other hand, from Windows you can inject a NT hash or Kerberos ticket with
 Restricted Admin is enabled
 
   ![image](https://user-images.githubusercontent.com/26215963/179484202-ac11e864-0b23-4c12-8c3d-0ce67d0970f3.png)
-Restricted Admin is not enabled
-Windows computers credentials
+
+  Restricted Admin is not enabled
+
+  Windows computers credentials
 LSASS credentials
 In a Windows machine, a common place to find credentials is the LSASS (Local Security Authority Subsystem Service) process (lsass.exe). The LSASS process is on charge of manage the security related operations of the computer, including users authentication.
 
 When an user performs an interactive logon in the computer, by accessing physically to the computer or through RDP, the user credentials get cached in the LSASS process in order to use SSO (Single Sign-On) when network logon will be required to access to other domain computers.
 
+```diff
 Be aware that remote users authenticated through NTLM or Kerberos will not let cached credentials in the computer (in the lsass process), since those protocols don't really sent the user credentials to the computer (except if Kerberos delegation is enabled), but a proof, that can be either a NTLM hash or Kerberos ticket generated with the credentials.
 
 In summary, you cannot extract from lsass (with mimikatz) the credentials of remote users authenticated with NTLM or Kerberos. (Unless the protocol/service sends them explicitly after authentication, as RDP does, but this has nothing to do with NTLM or Kerberos)
-
+```
 The credentials are cached by some of the SSPs (Security Support Providers) that are used by LSASS in order to provide different authentication methods. Some SSPs are the following:
 
 The Kerberos SSP manages the Kerberos authentication and is responsible to store the tickets and Kerberos keys for the current logged users.
