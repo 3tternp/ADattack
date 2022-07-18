@@ -47,113 +47,113 @@
         - Dumping registry credentials
       - Powershell history
       - Other places to find credentials in Windows
-Linux computers
-Linux computers discovery
-Linux computers connection
-Linux computers credentials
-Linux Kerberos tickets
-Linux user files
-SSH keys
-Bash history
-Other places to find credentials in Linux
-Services
-Host service
-Database
-Classes
-Properties
-Principals
-SID
-Distinguished Names
-Partitions
-Global Catalog
-How to query the database?
-LDAP
-ADWS
-Other protocols
-Security
-Address resolution
-ARP
-ARP spoof
-ARP Scan
-DHCP
-Rogue DHCP server
-DHCP Starvation
-DHCP Discovery
-DHCP Dynamic DNS
-DNS
-DNS Basics
-DNS zones
-DNS exfiltration
-Fake DNS server
-DNS Zone Transfer
-Dump DNS records
-ADIDNS
-DNS dynamic updates
-NetBIOS
-NetBIOS Datagram Service
-NetBIOS Session Service
-NetBIOS Name Service
-LLMNR
-mDNS
-WPAD
-Authentication
-GSS-API/SSPI
-Windows SSPs
-Kerberos SSP
-NTLM SSP
-Negotiate SSP
-Digest SSP
-Secure Channel SSP
-Cred SSP
-Custom SSPs
-SPNEGO
-NTLM
-NTLM Basics
-NTLMv1
-NTLMv2
-MIC
-NTLM in Active Directory
-NTLM Attacks
-NTLM Recon
-NTLM brute-force
-Pass the hash
-NTLM Relay
-NTLM Relay Protections
-NTLM hashes cracking
-Kerberos
-Kerberos Basics
-Kerberos principals
-Tickets
-PAC
-Kerberos actors
-Ticket types
-ST
-TGT
-Ticket acquisition
-Kerberos services
-Kerberos keys
-Kerberos basic attacks
-Kerberos brute-force
+- Linux computers
+- Linux computers discovery
+- Linux computers connection
+- Linux computers credentials
+- Linux Kerberos tickets
+- Linux user files
+- SSH keys
+- Bash history
+- Other places to find credentials in Linux
+- Services
+- Host service
+- Database
+- Classes
+- Properties
+- Principals
+- SID
+- Distinguished Names
+- Partitions
+- Global Catalog
+- How to query the database?
+- LDAP
+- ADWS
+- Other protocols
+- Security
+- Address resolution
+- ARP
+- ARP spoof
+- ARP Scan
+- DHCP
+- Rogue DHCP server
+- DHCP Starvation
+- DHCP Discovery
+- DHCP Dynamic DNS
+- DNS
+- DNS Basics
+- DNS zones
+- DNS exfiltration
+- Fake DNS server
+- DNS Zone Transfer
+- Dump DNS records
+- ADIDNS
+- DNS dynamic updates
+- NetBIOS
+- NetBIOS Datagram Service
+- NetBIOS Session Service
+- NetBIOS Name Service
+- LLMNR
+- mDNS
+- WPAD
+- Authentication
+- GSS-API/SSPI
+- Windows SSPs
+- Kerberos SSP
+- NTLM SSP
+- Negotiate SSP
+- Digest SSP
+- Secure Channel SSP
+- Cred SSP
+- Custom SSPs
+- SPNEGO
+- NTLM
+- NTLM Basics
+- NTLMv1
+- NTLMv2
+- MIC
+- NTLM in Active Directory
+- NTLM Attacks
+- NTLM Recon
+- NTLM brute-force
+- Pass the hash
+- NTLM Relay
+- NTLM Relay Protections
+- NTLM hashes cracking
+- Kerberos
+- Kerberos Basics
+- Kerberos principals
+- Tickets
+- PAC
+- Kerberos actors
+- Ticket types
+- ST
+- TGT
+- Ticket acquisition
+- Kerberos services
+- Kerberos keys
+- Kerberos basic attacks
+- Kerberos brute-force
 - Kerberoast
-ASREProast
-Pass the Key/Over Pass the Hash
-Pass the Ticket
-Golden/Silver ticket
-Kerberos Across domains
-SID History attack
-Inter-realm TGT
-Kerberos Delegation
-Kerberos Anti Delegation Measures
-Kerberos Unconstrained Delegation
-Kerberos Unconstrained Delegation across forests
-Kerberos Constrained Delegation
-S4U2proxy
-S4U2self
-S4U2self and S4U2proxy
-S4U attacks
-Logon types
-Interactive logon
-Network logon
+- ASREProast
+- Pass the Key/Over Pass the Hash
+- Pass the Ticket
+- Golden/Silver ticket
+- Kerberos Across domains
+- SID History attack
+- Inter-realm TGT
+- Kerberos Delegation
+- Kerberos Anti Delegation Measures
+- Kerberos Unconstrained Delegation
+- Kerberos Unconstrained Delegation across forests
+- Kerberos Constrained Delegation
+- S4U2proxy
+- S4U2self
+- S4U2self and S4U2proxy
+- S4U attacks
+- Logon types
+- Interactive logon
+- Network logon
 - Batch logon
 - Service logon
 - NetworkCleartext logon
@@ -164,35 +164,35 @@ Network logon
 - Security descriptor
 - ACEs
 - Rights
-ACL attacks
-AdminSDHolder
-Privileges
-Group Policy
-GPO Scope
-Group Policy template
-Group Policy container
-Communication Protocols
-SMB
-Shares
+- ACL attacks
+- AdminSDHolder
+- Privileges
+- Group Policy
+- GPO Scope
+- Group Policy template
+- Group Policy container
+- Communication Protocols
+- SMB
+- Shares
 - Default shares
 - Default domain shares
 - Named pipes
-HTTP
-RPC
-RPC over SMB
-RPC over TCP
-WinRM
-Powershell remoting
-Trusted Hosts
-SSH
-SSH tunneling
-RDP
-Microsoft extras
-ADCS
-LAPS
-Exchange
-SQL Server
-Recommended resources
+- HTTP
+- RPC
+- RPC over SMB
+- RPC over TCP
+- WinRM
+- Powershell remoting
+- Trusted Hosts
+- SSH
+- SSH tunneling
+- RDP
+- Microsoft extras
+- ADCS
+- LAPS
+- Exchange
+- SQL Server
+- Recommended resources
 `#0d1117` Disclaimer: This is done for educational purposes, and you should only apply the attacks described here to systems that you have permission for.
 `#0d1117`
 What is Active Directory?
@@ -247,7 +247,7 @@ First of all, what we have been calling an Active Directory network is what is u
 
 Domain name
 Each domain has a DNS name. In many companies, the name of the domain is the same as their web site, for example contoso.com, while others have a different internal domain such as contoso.local.
-
+```diff 
 PS C:\Users\Anakin> $env:USERDNSDOMAIN
 CONTOSO.LOCAL
 PS C:\Users\Anakin> (Get-ADDomain).DNSRoot
@@ -255,16 +255,18 @@ contoso.local
 Identify current user domain from Powershell
 PS C:\Users\Anakin> (Get-WmiObject Win32_ComputerSystem).Domain
 contoso.local
+```
 Identify current computer domain from Powershell
 In addition to its DNS name, every domain can also be identified with NetBIOS name. For example, the domain contoso.local could have the NetBIOS name CONTOSO. You can see the NetBIOS name being used in log in operations, where the user is identified with something like CONTOSO\Administrator, where the first part is the NetBIOS name and the second one is the username.
 
 Finally, a domain can be identified by its SID (Security Identifier). The SID is more used by programs (using the Windows API) than users, but you should know how to obtain it in case you require it.
-
+```diff 
 PS C:\Users\Anakin> Get-ADDomain | select DNSRoot,NetBIOSName,DomainSID
 
 DNSRoot       NetBIOSName DomainSID
 -------       ----------- ---------
 contoso.local CONTOSO     S-1-5-21-1372086773-2238746523-2939299801
+```
 Get DNS name, NetBIOS name and SID of domain
 Forests
 Using a DNS name is very useful, since it allows to create subdomains for management purposes. For example, a company can have a root domain called contoso.local, and then subdomains for different (usually big) departments, like it.contoso.local or sales.contoso.local.
